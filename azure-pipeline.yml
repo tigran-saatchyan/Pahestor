@@ -1,0 +1,25 @@
+trigger:
+- '*'
+- master
+- develop
+
+pr:
+- master
+- develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: pre_commit
+  displayName: 'Run pre-commit checks'
+  steps:
+  - checkout: self
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.12'
+      addToPath: true
+  - script: |
+      pip install pre-commit
+      pre-commit run --all-files
+    displayName: 'Run pre-commit checks'
